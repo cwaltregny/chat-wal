@@ -50,19 +50,6 @@ st.markdown(
 
 # Pre-prompt to attempt to direct GPT-3.5 to respond in Walloon.
 # This would be an experimental approach, as GPT-3.5 is not specifically trained on Walloon.
-pre_prompt = """The following is a text in French with the translation in Walloon:
-
-French: Le rifondou walon (appellation en wallon), appelé en français wallon unifié, est une forme normalisée du wallon lancée par le mouvement du même nom dans les années 1990 sans statut officiel et dont la légitimité, depuis sa création, l'objet d'avis divergents aussi bien au sein des dialectologues que des autres associations wallophones.
-Son système orthographique propre se caractérise par l'introduction de graphèmes spécialement conçus pour qu'un même phonème puisse être prononcé conformément à la prononciation de chaque région.
-Walloon:El rifondou walon u li rfondou walon, c' est on sistinme di scrijhaedje unifyî do walon, enondé pa l' UCW eyet porshuvou et spårdou pa l' SNR Li Rantoele dins les anêyes 1990.
-Les djins k' î ont bråmint bouté sont lomés les «rfondeus». C' est l' prumî sistinme unifyî k' a stî vormint eployî pa sacwantès djins, et ki s' diswalpêye todi dpus.
-
-Here is another example: 
-
-French: Bonjour! Comment puis-je vous aider aujourd'hui?
-Walloon: Bondjou! Comint vos édî oûy?
-
-Your turn, the user will enter a text in French, translate to Walloon. """
 
 # Function to ask the API
 def ask_gpt(prompt):
@@ -97,7 +84,21 @@ user_input = st.text_area("Ecrivez votre phrase en français ici pour la traduir
 if st.button('Traduire en Wallon', key='translate_button'):
     if user_input:
         with st.spinner('Génération de la traduction en Wallon...'):
-            prompt = pre_prompt + user_input
+            prompt = """The following is a text in French with the translation in Walloon:
+            French: Le rifondou walon (appellation en wallon), appelé en français wallon unifié, est une forme normalisée du wallon lancée par le mouvement du même nom dans les années 1990 sans statut officiel et dont la légitimité, depuis sa création, l'objet d'avis divergents aussi bien au sein des dialectologues que des autres associations wallophones.
+            Son système orthographique propre se caractérise par l'introduction de graphèmes spécialement conçus pour qu'un même phonème puisse être prononcé conformément à la prononciation de chaque région.
+            Walloon:El rifondou walon u li rfondou walon, c' est on sistinme di scrijhaedje unifyî do walon, enondé pa l' UCW eyet porshuvou et spårdou pa l' SNR Li Rantoele dins les anêyes 1990.
+            Les djins k' î ont bråmint bouté sont lomés les «rfondeus». C' est l' prumî sistinme unifyî k' a stî vormint eployî pa sacwantès djins, et ki s' diswalpêye todi dpus.
+
+            Here is another example: 
+
+            French: Bonjour! Comment puis-je vous aider aujourd'hui?
+            Walloon: Bondjou! Comint vos édî oûy?
+
+            Now translate the user input below in French to Walloon:
+
+            French: {}
+            Walloon: """.format(user_input)
             answer = ask_gpt(prompt)
             st.text_area("Traduction en Wallon:", value=answer, height=150, help="La traduction générée en Wallon.", key="response_area")
     else:
