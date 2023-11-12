@@ -1,9 +1,10 @@
 import streamlit as st
-import openai
+from openai import OpenAI
 import os
 
 # Set up your OpenAI API key
-openai.api_key = os.getenv('OPENAI_API_KEY')
+openai_api_key = os.getenv('OPENAI_API_KEY')
+client = OpenAI(api_key=openai_api_key)
 
 # Streamlit page configuration
 st.set_page_config(page_title="TradWal - Traduire en Wallon", layout="wide")
@@ -54,7 +55,7 @@ st.markdown(
 # Function to ask the API
 def ask_gpt(system_prompt, user_prompt):
     try:
-        response = openai.ChatCompletion.create(
+        response = client.chat.completions.create(
             model="gpt-3.5-turbo", 
             messages=[{"role": "system", "content": system_prompt},{"role": "user", "content": user_prompt}],
             max_tokens=150,
